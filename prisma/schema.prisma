@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// npx prisma migrate dev --name "init"
+
+model User {
+  id             String     @id @default(uuid())
+  email          String     @unique
+  fullName       String?
+  username       String?
+  birthDate      String?
+  work           String?
+  hashedPassword String
+  address        String?
+  phone          String?
+  avatar         String?
+  accessToken    String?
+  refreshToken   String?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  favoriteMeals  UserMeal[]
+}
+
+model Meal {
+  id        String     @id @default(uuid())
+  name      String
+  cuisine   String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  users     UserMeal[]
+}
+
+model UserMeal {
+  userId    String
+  mealId    String
+  user      User     @relation(fields: [userId], references: [id])
+  meal      Meal     @relation(fields: [mealId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([userId, mealId])
+}
+
+model Ingredient {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Recipe    Recipe?  @relation(fields: [recipeId], references: [id])
+  recipeId  String?
+}
+
+model Recipe {
+  id          String       @id @default(uuid())
+  description String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  ingredients Ingredient[]
+}
