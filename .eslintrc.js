@@ -24,7 +24,7 @@ module.exports = {
                 singleQuote: true,
                 tabWidth: 4,
                 semi: false,
-                printWidth: 180,
+                printWidth: 150,
             },
         ],
     },

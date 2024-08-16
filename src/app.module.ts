@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common'
-import { AuthModule } from './features/auth'
+import { ConfigModule } from '@nestjs/config'
 import { UsersModule } from './features/users'
+import { CuisinesModule } from './features/cuisines'
 
 @Module({
-    imports: [AuthModule, UsersModule],
+    imports: [ConfigModule.forRoot({ isGlobal: true, envFilePath: ['.env'] }), UsersModule, CuisinesModule],
     controllers: [],
     providers: [],
 })
